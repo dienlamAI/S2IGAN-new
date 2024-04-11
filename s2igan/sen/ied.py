@@ -12,12 +12,12 @@ class ImageEncoder(nn.Module):
 
     def __init__(self, output_dim: int = 1024):
         super().__init__()
-        try:
-            weights = torchvision.models.get_weight("Inception_V3_Weights.DEFAULT")
-            model = torchvision.models.inception_v3(weights=weights)
-        except:
-            model = torchvision.models.inception_v3(pretrained=True)
-        # model = torchvision.models.resnet50(pretrained=True) #new
+        # try:
+        #     weights = torchvision.models.get_weight("Inception_V3_Weights.DEFAULT")
+        #     model = torchvision.models.inception_v3(weights=weights)
+        # except:
+        #     model = torchvision.models.inception_v3(pretrained=True)
+        model = torchvision.models.resnet50(pretrained=True) #new
         model.AuxLogits = None
         model.aux_logits = False
         set_non_grad(model)

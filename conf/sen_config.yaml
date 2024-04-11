@@ -1,0 +1,68 @@
+data:
+  general:
+    input_size: 299
+    n_fft: 512
+    n_mels: 40
+    win_length: 250
+    hop_length: 100
+    n_class: 103 # get from dataset externally
+    batch_size: 12
+    num_workers: 20
+  train: 
+    json_file: /kaggle/input/s2igan-oxford/s2igan_oxford/train_flower_en2vi.json
+    img_path: /kaggle/input/s2igan-oxford/s2igan_oxford/image_oxford/image_oxford
+    audio_path: /kaggle/input/s2igan-oxford/s2igan_oxford/oxford_audio/oxford_audio
+    input_size: ${data.general.input_size}
+    n_fft: ${data.general.n_fft}
+    n_mels: ${data.general.n_mels}
+    win_length: ${data.general.win_length}
+    hop_length: ${data.general.hop_length}
+  test:
+    json_file: /kaggle/input/s2igan-oxford/s2igan_oxford/test_flower_en2vi.json
+    img_path: /kaggle/input/s2igan-oxford/s2igan_oxford/image_oxford/image_oxford
+    audio_path: /kaggle/input/s2igan-oxford/s2igan_oxford/oxford_audio/oxford_audio
+    input_size: ${data.general.input_size}
+    n_fft: ${data.general.n_fft}
+    n_mels: ${data.general.n_mels}
+    win_length: ${data.general.win_length}
+    hop_length: ${data.general.hop_length}
+
+model:
+  image_encoder:
+    output_dim: 1024
+  speech_encoder:
+    input_dim: ${data.general.n_mels}
+    cnn_dim: [64, 128]
+    kernel_size: 6
+    stride: 2
+    rnn_dim: 512
+    rnn_num_layers: 2
+    rnn_type: gru
+    rnn_dropout: 0.1
+    rnn_bidirectional: True
+    attn_heads: 1
+    attn_dropout: 0.1
+  classifier:
+    in_features: ${model.image_encoder.output_dim}
+    out_features: ${data.general.n_class}
+
+optimizer:
+  lr: 0.000004
+
+scheduler:
+  use: true
+  pct_start: 0.5
+
+experiment:
+  train: true
+  test: true
+  max_epoch: 50
+  log_wandb: true
+
+loss:
+  beta: 10
+
+ckpt:
+  speech_encoder: null
+  image_encoder: null
+  classifier: null

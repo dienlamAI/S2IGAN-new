@@ -21,7 +21,12 @@ config_name = "sen_config"
 
 @hydra.main(version_base=None, config_path=config_path, config_name=config_name)
 def main(cfg: DictConfig):
-    wandb.init(project="speech2image", name="SEN")
+    bs = cfg.data.general.batch_size
+    attn_heads = cfg.model.speech_encoder.attn_heads
+    attn_dropout = cfg.model.speech_encoder.attn_dropout
+    rnn_dropout = cfg.model.speech_encoder.rnn_dropout
+    lr = cfg.optimizer.lr
+    wandb.init(project="speech2image", name=f"SEN_bs{bs}_lr{lr}_attn{attn_heads}_ad{attn_dropout}_rd{rnn_dropout}_{cfg.kaggle.user}")
 
     device = "cuda:0" if torch.cuda.is_available() else "cpu"
     multi_gpu = torch.cuda.device_count() > 1
@@ -29,8 +34,7 @@ def main(cfg: DictConfig):
 
     train_set = SENDataset(**cfg.data.train)
     test_set = SENDataset(**cfg.data.test)
-
-    bs = cfg.data.general.batch_size
+ 
     nwkers = cfg.data.general.num_workers
     train_dataloader = DataLoader(
         train_set, bs, shuffle=True, num_workers=nwkers, collate_fn=sen_collate_fn

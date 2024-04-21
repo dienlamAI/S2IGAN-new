@@ -9,7 +9,7 @@ class SpeechEncoder(nn.Module):
     def __init__(
         self,
         input_dim: int = 40,
-        cnn_dim: List[int] = [128, 512],
+        cnn_dim: List[int] = [64, 128],
         kernel_size: int = 6,
         stride: int = 1,
         rnn_dim: int = 512,
@@ -47,7 +47,6 @@ class SpeechEncoder(nn.Module):
         else:
             self.rnn = nn.GRU(**rnn_kwargs)
         self.output_dim = rnn_dim * (int(rnn_bidirectional) + 1)
-        self.linear = nn.Linear(self.output_dim, 512)
         self.self_attention = nn.MultiheadAttention(
             embed_dim=self.output_dim,
             num_heads=attn_heads,
@@ -56,6 +55,7 @@ class SpeechEncoder(nn.Module):
         )
 
         # thêm fix forward
+        self.linear = nn.Linear(self.output_dim, 512)
 
         self.linear2 = nn.Linear(512, 256)
 

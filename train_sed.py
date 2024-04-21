@@ -9,11 +9,11 @@ from torch.utils.data import DataLoader
 from torchsummary import summary
 import os
 import wandb
-from data.data_collator import sen_collate_fn
+from data.data_collator import sed_collate_fn
 from data.dataset import SENDataset
 from s2igan.loss import SEDLoss
 from s2igan.sen import ImageEncoder, SpeechEncoder
-from s2igan.sen.utils import sen_train_epoch, sen_eval_epoch
+from s2igan.sen.utils import sed_train_epoch, sed_eval_epoch
 
 config_path = "conf"
 config_name = "sen_config"
@@ -37,10 +37,10 @@ def main(cfg: DictConfig):
  
     nwkers = cfg.data.general.num_workers
     train_dataloader = DataLoader(
-        train_set, bs, shuffle=True, num_workers=nwkers, collate_fn=sen_collate_fn
+        train_set, bs, shuffle=True, num_workers=nwkers, collate_fn=sed_collate_fn
     )
     test_dataloder = DataLoader(
-        test_set, bs, shuffle=False, num_workers=nwkers, collate_fn=sen_collate_fn
+        test_set, bs, shuffle=False, num_workers=nwkers, collate_fn=sed_collate_fn
     )
  
     speech_encoder = SpeechEncoder(**cfg.model.speech_encoder)
@@ -97,7 +97,7 @@ def main(cfg: DictConfig):
 
     if cfg.experiment.train:
         for epoch in range(cfg.experiment.max_epoch):
-            train_result = sen_train_epoch( 
+            train_result = sed_train_epoch( 
                 speech_encoder,
                 classifier,
                 train_dataloader,
@@ -108,7 +108,7 @@ def main(cfg: DictConfig):
                 epoch,
                 log_wandb,
             )
-            eval_result = sen_eval_epoch( 
+            eval_result = sed_eval_epoch( 
                 speech_encoder,
                 classifier,
                 test_dataloder,

@@ -17,8 +17,8 @@ class ImageEncoder(nn.Module):
         #     model = torchvision.models.inception_v3(weights=weights)
         # except:
         #     model = torchvision.models.inception_v3(pretrained=True)
-        # model = torchvision.models.resnet50(pretrained=True) #new
-        model = torchvision.models.resnet152(pretrained=True) #new
+        model = torchvision.models.resnet50(pretrained=True) #new
+        # model = torchvision.models.resnet152(pretrained=True) #new
         model.AuxLogits = None
         model.aux_logits = False
         set_non_grad(model)

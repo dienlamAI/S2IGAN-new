@@ -32,7 +32,7 @@ def sed_collate_fn(batch):
     labels = torch.LongTensor([i[2] for i in batch])
 
     if len(specs.shape) == 3:
-        specs = specs.permute(0, 2, 1)  # (-1, n_mels, len)
+        specs = specs.permute(0, 1, 3, 2)  # (-1, n_mels, len)
     else:
         print(f"Unexpected shape for specs: {specs.shape}")
 

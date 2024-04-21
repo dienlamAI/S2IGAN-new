@@ -53,7 +53,8 @@ class SpeechEncoder(nn.Module):
             dropout=attn_dropout,
             batch_first=True,
         )
- 
+
+        # thêm fix forward
         self.linear = nn.Linear(self.output_dim, 512)
 
         self.linear2 = nn.Linear(512, 256)
@@ -94,7 +95,9 @@ class SpeechEncoder(nn.Module):
         out, weights = self.self_attention(out, out, out)
         out = out.mean(dim=1)  # mean the time step
 
+        print(out.shape)
         out = self.linear(out)
+        print(out.shape)
         out = self.relu(out)
         out = self.linear2(out)
         out = self.relu(out)

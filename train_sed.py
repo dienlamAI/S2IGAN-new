@@ -16,7 +16,7 @@ from s2igan.sen import ImageEncoder, SpeechEncoder
 from s2igan.sen.utils import sen_train_epoch, sen_eval_epoch
 
 config_path = "conf"
-config_name = "sei_config"
+config_name = "sen_config"
 
 
 @hydra.main(version_base=None, config_path=config_path, config_name=config_name)

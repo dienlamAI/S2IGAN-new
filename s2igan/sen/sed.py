@@ -64,7 +64,8 @@ class SpeechEncoder(nn.Module):
         mel_spec (-1, 40, len)
         output (-1, len, rnn_dim * (int(bidirectional) + 1))
         """
-        cnn_out = self.cnn(mel_spec)
+        # cnn_out = self.cnn(mel_spec)
+        cnn_out = self.cnn2d(mel_spec.unsqueeze(1))
 
         # l = [
         #     torch.div(y - self.kernel_size, self.stride, rounding_mode="trunc") + 1

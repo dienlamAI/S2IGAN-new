@@ -9,9 +9,9 @@ class SpeechEncoder(nn.Module):
     def __init__(
         self,
         input_dim: int = 40,
-        cnn_dim: List[int] = [64, 128],
+        cnn_dim: List[int] = [128, 512],
         kernel_size: int = 6,
-        stride: int = 2,
+        stride: int = 1,
         rnn_dim: int = 512,
         rnn_num_layers: int = 2,
         rnn_type: str = "gru",
@@ -26,7 +26,7 @@ class SpeechEncoder(nn.Module):
             nn.Conv1d(input_dim, cnn_dim[0], kernel_size, stride),
             nn.BatchNorm1d(cnn_dim[0]),
             nn.ReLU(), #new
-            nn.Conv1d(cnn_dim[0], cnn_dim[1], kernel_size, stride),
+            nn.Conv1d(cnn_dim[0], cnn_dim[1], kernel_size-3, stride),
             nn.BatchNorm1d(cnn_dim[1]),
             nn.ReLU(), #new
         )
@@ -53,6 +53,13 @@ class SpeechEncoder(nn.Module):
             dropout=attn_dropout,
             batch_first=True,
         )
+ 
+        self.linear = nn.Linear(self.output_dim, 512)
+
+        self.linear2 = nn.Linear(512, 256)
+
+        self.relu = nn.ReLU()
+        self.linear3 = nn.Linear(256, 128)
 
     def get_params(self):
         return [p for p in self.parameters() if p.requires_grad]
@@ -86,5 +93,12 @@ class SpeechEncoder(nn.Module):
 
         out, weights = self.self_attention(out, out, out)
         out = out.mean(dim=1)  # mean the time step
+
+        out = self.linear(out)
+        out = self.relu(out)
+        out = self.linear2(out)
+        out = self.relu(out)
+        out = self.linear3(out)
+
         out = torch.nn.functional.normalize(out)
         return out

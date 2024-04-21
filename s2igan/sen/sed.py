@@ -95,13 +95,17 @@ class SpeechEncoder(nn.Module):
         out, weights = self.self_attention(out, out, out)
         out = out.mean(dim=1)  # mean the time step
 
-        print(out.shape)
+        print("trươc: ",out.shape)
         out = self.linear(out)
-        print(out.shape)
+        print("linear: ",out.shape)
         out = self.relu(out)
+        print("relu: ",out.shape)
         out = self.linear2(out)
+        print("linear2: ",out.shape)
         out = self.relu(out)
+        print("relu: ",out.shape)
         out = self.linear3(out)
+        print("linear3: ",out.shape)
 
         out = torch.nn.functional.normalize(out)
         return out

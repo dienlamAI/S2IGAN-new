@@ -225,7 +225,6 @@ def sed_eval_epoch(
 
             speech_acc = (cls_speech.argmax(-1) == labels).sum() / labels.size(0) * 100
 
-            img_acc = img_acc.item()
             speech_acc = speech_acc.item()
 
             run_loss += loss

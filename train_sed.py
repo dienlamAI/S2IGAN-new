@@ -70,12 +70,12 @@ def main(cfg: DictConfig):
 
     if multi_gpu:
         model_params = ( 
-            + speech_encoder.module.get_params()
+            speech_encoder.module.get_params()
             + list(classifier.module.parameters())
         )
     else:
         model_params = ( 
-            + speech_encoder.get_params()
+            speech_encoder.get_params()
             + list(classifier.parameters())
         )
 

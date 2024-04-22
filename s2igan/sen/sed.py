@@ -23,10 +23,10 @@ class SpeechEncoder(nn.Module):
         super().__init__()
         assert rnn_type in ["lstm", "gru"]
         self.cnn = nn.Sequential(
-            nn.Conv1d(input_dim, cnn_dim[0], kernel_size, stride),
+            nn.Conv2d(input_dim, cnn_dim[0], kernel_size, stride),
             nn.BatchNorm1d(cnn_dim[0]),
             nn.ReLU(), #new
-            nn.Conv1d(cnn_dim[0], cnn_dim[1], kernel_size, stride),
+            nn.Conv2d(cnn_dim[0], cnn_dim[1], kernel_size, stride),
             nn.BatchNorm1d(cnn_dim[1]),
             nn.ReLU(), #new
         )
@@ -64,8 +64,7 @@ class SpeechEncoder(nn.Module):
         mel_spec (-1, 40, len)
         output (-1, len, rnn_dim * (int(bidirectional) + 1))
         """
-        # cnn_out = self.cnn(mel_spec)
-        cnn_out = self.cnn2d(mel_spec.unsqueeze(1))
+        cnn_out = self.cnn(mel_spec) 
 
         # l = [
         #     torch.div(y - self.kernel_size, self.stride, rounding_mode="trunc") + 1

@@ -221,7 +221,8 @@ def sed_eval_epoch(
             cls_speech = classifier(A)
 
             # dist_loss, loss = criterion( cls_speech, labels)
-            dist_loss, loss = criterion(cls_speech.unsqueeze(0), labels)
+            labels_resized = labels.resize_(cls_speech.size(0))
+            dist_loss, loss = criterion(cls_speech, labels_resized)
 
             loss = loss.item()
 

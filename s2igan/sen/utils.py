@@ -163,7 +163,8 @@ def sed_train_epoch(
         A = speech_encoder(specs, len_specs)
         cls_speech = classifier(A)
 
-        dist_loss, loss = criterion(cls_speech, labels)
+        # dist_loss, loss = criterion(cls_speech, labels)
+        dist_loss, loss = criterion(cls_speech.unsqueeze(0), labels)
         loss.backward()
 
         optimizer.step()
@@ -219,7 +220,8 @@ def sed_eval_epoch(
             A = speech_encoder(specs, len_specs)
             cls_speech = classifier(A)
 
-            dist_loss, loss = criterion( cls_speech, labels)
+            # dist_loss, loss = criterion( cls_speech, labels)
+            dist_loss, loss = criterion(cls_speech.unsqueeze(0), labels)
 
             loss = loss.item()
 

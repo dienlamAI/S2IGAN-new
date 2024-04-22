@@ -31,6 +31,7 @@ def sed_collate_fn(batch):
     len_specs = torch.LongTensor([i[2] for i in batch])
     labels = torch.LongTensor([i[2] for i in batch])
 
+    print(specs.shape)
     specs = specs.permute(0, 2, 1)  # (-1, n_mels, len)
 
     return specs, len_specs, labels

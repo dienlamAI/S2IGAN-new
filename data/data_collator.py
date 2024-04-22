@@ -28,9 +28,9 @@ def rdg_collate_fn(batch):
 # sed
 def sed_collate_fn(batch):  
     specs = pad_sequence([i[0] for i in batch], batch_first=True)  # (-1, len, n_mels)
-    len_specs = torch.LongTensor([i[1].item() for i in batch if i[1].numel() == 1])
+    len_specs = torch.LongTensor([i[2] for i in batch])
     labels = torch.LongTensor([i[2] for i in batch])
 
-    specs = specs.permute(0, 1, 3, 2)  # (-1, n_mels, len)
+    specs = specs.permute(0, 2, 1)  # (-1, n_mels, len)
 
     return specs, len_specs, labels

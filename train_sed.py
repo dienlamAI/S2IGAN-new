@@ -91,7 +91,7 @@ def main(cfg: DictConfig):
         )
         scheduler = torch.optim.lr_scheduler.OneCycleLR(optimizer, **sched_dict)
 
-    criterion = SEDLoss(**cfg.loss).to(device)
+    criterion = SEDLoss().to(device)
 
     log_wandb = cfg.experiment.log_wandb
 

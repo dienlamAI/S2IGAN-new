@@ -11,7 +11,7 @@ class SpeechEncoder(nn.Module):
         input_dim: int = 40,
         cnn_dim: List[int] = [64, 128],
         kernel_size: int = 6,
-        stride: int = 1,
+        stride: int = 2,
         rnn_dim: int = 512,
         rnn_num_layers: int = 2,
         rnn_type: str = "gru",

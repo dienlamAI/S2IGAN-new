@@ -92,6 +92,50 @@ class SENDataset(Dataset):
 
         return img, mel_spec, mel_spec.size(0), item["label"]
 
+# sed
+class SEDDataset(Dataset):
+    def __init__(
+        self,
+        json_file: str,
+        audio_path: str,
+        n_fft=512,
+        n_mels=40,
+        win_length=250,
+        hop_length=100,
+    ):
+        super().__init__()
+        data = json.load(open(json_file, "r", encoding="utf-8"))["data"]
+        walker = [
+            [
+                dict(
+                    label=datum["class"],
+                    audio=audio_path + os.sep + wav,
+                )
+                for wav in datum["wav"]
+            ]
+            for datum in data
+        ]
+        # check exits
+        self.walker = [j for i in walker for j in i]
+ 
+
+        sample_rate = 16000  # default value
+        self.audio_transform = MelSpectrogram(
+            sample_rate, n_fft, win_length, hop_length, n_mels=n_mels
+        )
+
+    def __len__(self):
+        return len(self.walker)
+
+    def __getitem__(self, idx):
+        item = self.walker[idx]
+
+
+        wav, sr = torchaudio.load(item["audio"])
+        mel_spec = self.audio_transform(wav)
+        mel_spec = mel_spec.squeeze().permute(1, 0)  # (len, n_mels)
+
+        return mel_spec, mel_spec.size(0), item["label"]
 
 class RDGDataset(Dataset):
     def __init__(

@@ -10,7 +10,7 @@ from torchsummary import summary
 import os
 import wandb
 from data.data_collator import sed_collate_fn
-from data.dataset import SENDataset
+from data.dataset import SEDDataset
 from s2igan.loss import SEDLoss
 from s2igan.sen import ImageEncoder, SpeechEncoder
 from s2igan.sen.utils import sed_train_epoch, sed_eval_epoch
@@ -32,8 +32,8 @@ def main(cfg: DictConfig):
     multi_gpu = torch.cuda.device_count() > 1
     device_ids = list(range(torch.cuda.device_count()))
 
-    train_set = SENDataset(**cfg.data.train)
-    test_set = SENDataset(**cfg.data.test)
+    train_set = SEDDataset(**cfg.data.train)
+    test_set = SEDDataset(**cfg.data.test)
  
     nwkers = cfg.data.general.num_workers
     train_dataloader = DataLoader(

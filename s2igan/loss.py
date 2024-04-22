@@ -68,14 +68,22 @@ class SENLoss(nn.Module):
         match_loss = self.matching_loss(x, y, labels)
         dist_loss = self.distinctive_loss(cls_x, cls_y, labels)
         return match_loss.detach(), dist_loss.detach(), match_loss + dist_loss
-
-class SEDLoss(nn.Module):
-    def __init__(self, beta: int = 10):
+    
+# sed
+class DistinctiveLossSED(nn.Module):
+    def __init__(self):
         super().__init__()
-        self.distinctive_loss = DistinctiveLoss()
+        self.crit = nn.CrossEntropyLoss()
 
-    def forward(self, cls_x, cls_y, labels):
-        dist_loss = self.distinctive_loss(cls_x, cls_y, labels)
+    def forward(self, cls_x, labels):
+        return self.crit(cls_x, labels)
+class SEDLoss(nn.Module):
+    def __init__(self):
+        super().__init__()
+        self.distinctive_loss = DistinctiveLossSED()
+
+    def forward(self, cls_x,labels):
+        dist_loss = self.distinctive_loss(cls_x, labels)
         return dist_loss.detach() + dist_loss
 
 class KLDivergenceLoss(nn.Module):

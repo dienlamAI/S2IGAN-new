@@ -98,6 +98,7 @@ class SEDDataset(Dataset):
         self,
         json_file: str,
         audio_path: str,
+        input_size=299,
         n_fft=512,
         n_mels=40,
         win_length=250,

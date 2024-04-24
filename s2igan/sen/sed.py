@@ -54,8 +54,7 @@ class SpeechEncoder(nn.Module):
             batch_first=True,
         )
 
-        # thêm fix forward 
-        self.cls = nn.Linear(self.output_dim, 1024)
+        # thêm fix forward  
     def get_params(self):
         return [p for p in self.parameters() if p.requires_grad]
 
@@ -89,8 +88,5 @@ class SpeechEncoder(nn.Module):
         out, weights = self.self_attention(out, out, out) 
         out = out.mean(dim=1)  # mean the time step
 
-        out = torch.nn.functional.normalize(out)
-        print("1",out.shape)
-        out = self.cls(out)
-        print("2",out.shape)
+        out = torch.nn.functional.normalize(out) 
         return out

@@ -89,6 +89,6 @@ class SpeechEncoder(nn.Module):
         out, weights = self.self_attention(out, out, out) 
         out = out.mean(dim=1)  # mean the time step
 
-
         out = torch.nn.functional.normalize(out)
+        out = self.cls(out)
         return out

@@ -90,5 +90,7 @@ class SpeechEncoder(nn.Module):
         out = out.mean(dim=1)  # mean the time step
 
         out = torch.nn.functional.normalize(out)
+        print("1",out.shape)
         out = self.cls(out)
+        print("2",out.shape)
         return out

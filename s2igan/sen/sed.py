@@ -89,7 +89,7 @@ class SpeechEncoder(nn.Module):
         print("1",out.shape) 
         out, weights = self.self_attention(out, out, out)
         print("2",out.shape) 
-        out = out.mean(dim=1)  # mean the time step
+        # out = out.mean(dim=1)  # mean the time step
 
         print("3",out.shape) 
 

@@ -25,11 +25,10 @@ class SpeechEncoder(nn.Module):
         self.cnn = nn.Sequential(
             nn.Conv1d(input_dim, cnn_dim[0], kernel_size, stride),
             nn.BatchNorm1d(cnn_dim[0]),
-            nn.ReLU(), #new
+            nn.SiLU(), #new
             nn.Conv1d(cnn_dim[0], cnn_dim[1], kernel_size, stride),
             nn.BatchNorm1d(cnn_dim[1]),
-            nn.ReLU(), #new
-            nn.Linear(cnn_dim[1], rnn_dim),
+            nn.SiLU(), #new 
         )
         
         self.kernel_size = kernel_size

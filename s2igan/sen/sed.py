@@ -55,7 +55,7 @@ class SpeechEncoder(nn.Module):
         )
 
         # thêm fix forward 
-        self.cls = nn.Linear(self.output_dim, 103)
+        self.cls = nn.Linear(8, 103)
     def get_params(self):
         return [p for p in self.parameters() if p.requires_grad]
 
@@ -90,5 +90,6 @@ class SpeechEncoder(nn.Module):
         out = out.mean(dim=1)  # mean the time step
 
         out = torch.nn.functional.normalize(out)
+        print(out.shape)
         out = self.cls(out)
         return out

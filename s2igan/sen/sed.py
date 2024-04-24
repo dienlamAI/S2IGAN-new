@@ -55,7 +55,7 @@ class SpeechEncoder(nn.Module):
         )
 
         # thêm fix forward 
-
+        self.cls = nn.Linear(self.output_dim, 102)
     def get_params(self):
         return [p for p in self.parameters() if p.requires_grad]
 
@@ -86,12 +86,9 @@ class SpeechEncoder(nn.Module):
         # pack input before RNN to reduce computing efforts
         out, hidden_state = self.rnn(cnn_out)
         
-        print("1",out.shape) 
-        out, weights = self.self_attention(out, out, out)
-        print("2",out.shape) 
-        # out = out.mean(dim=1)  # mean the time step
+        out, weights = self.self_attention(out, out, out) 
+        out = out.mean(dim=1)  # mean the time step
 
-        print("3",out.shape) 
 
         out = torch.nn.functional.normalize(out)
         return out

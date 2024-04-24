@@ -55,7 +55,7 @@ class SpeechEncoder(nn.Module):
         )
 
         # thêm fix forward 
-        self.cls = nn.Linear(self.self_attention, 1024)
+        self.cls = nn.Linear(self.output_dim, 1024)
     def get_params(self):
         return [p for p in self.parameters() if p.requires_grad]
 

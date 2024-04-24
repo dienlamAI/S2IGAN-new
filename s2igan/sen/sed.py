@@ -85,11 +85,13 @@ class SpeechEncoder(nn.Module):
         # out, seq_len = pad_packed_sequence(out, batch_first=True)
         # pack input before RNN to reduce computing efforts
         out, hidden_state = self.rnn(cnn_out)
-
+        
+        print("1",out.shape) 
         out, weights = self.self_attention(out, out, out)
+        print("2",out.shape) 
         out = out.mean(dim=1)  # mean the time step
 
-        print(out.shape) 
+        print("3",out.shape) 
 
         out = torch.nn.functional.normalize(out)
         return out

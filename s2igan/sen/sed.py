@@ -29,7 +29,7 @@ class SpeechEncoder(nn.Module):
             nn.Conv1d(cnn_dim[0], cnn_dim[1], kernel_size, stride),
             nn.BatchNorm1d(cnn_dim[1]),
             nn.ReLU(), #new
-            nn.Linear(1024, rnn_dim),
+            nn.Linear(cnn_dim[1], rnn_dim),
         )
         
         self.kernel_size = kernel_size

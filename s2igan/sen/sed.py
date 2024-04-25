@@ -43,7 +43,7 @@ class SpeechEncoder(nn.Module):
         self.stride = stride
 
         rnn_kwargs = dict(
-            input_size=cnn_dim[1],
+            input_size=512,
             hidden_size=rnn_dim,
             num_layers=rnn_num_layers,
             batch_first=True,
@@ -93,7 +93,7 @@ class SpeechEncoder(nn.Module):
         # packed = pack_padded_sequence(
         #     cnn_out, l, batch_first=True, enforce_sorted=False
         # )
-        # self.rnn.flatten_parameters()
+        # self.rnn.flatteSn_parameters()
         # out, hidden_state = self.rnn(packed)
         # out, seq_len = pad_packed_sequence(out, batch_first=True)
         # pack input before RNN to reduce computing efforts

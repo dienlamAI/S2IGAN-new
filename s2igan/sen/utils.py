@@ -163,7 +163,7 @@ def sed_train_epoch(
         A = speech_encoder(specs, len_specs)
         cls_speech = classifier(A)
 
-        dist_loss, loss = criterion(cls_speech, labels)
+        loss = criterion(cls_speech, labels)
         # dist_loss, loss = criterion(cls_speech.unsqueeze(0), labels)
         loss.backward()
 
@@ -180,8 +180,7 @@ def sed_train_epoch(
         run_speech_acc += speech_acc
 
         if log_wandb:
-            wandb.log({"train/sen_loss": loss})
-            wandb.log({"train/distinctive_loss": dist_loss.item()})
+            wandb.log({"train/sed_loss": loss})
             wandb.log({"train/speech_accuracy": speech_acc})
             wandb.log({"train/epoch": epoch})
             wandb.log({"train/lr-OneCycleLR": scheduler.get_last_lr()[0]})

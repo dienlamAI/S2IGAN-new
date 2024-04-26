@@ -12,7 +12,7 @@ import wandb
 from data.data_collator import sed_collate_fn
 from data.dataset import SEDDataset
 from s2igan.loss import SEDLoss
-from s2igan.sen.sed import  SpeechEncoder, SpeechEncoderNew
+from s2igan.sen.sed import  SpeechEncoder
 from s2igan.sen.utils import sed_train_epoch, sed_eval_epoch
 
 config_path = "conf"
@@ -43,8 +43,7 @@ def main(cfg: DictConfig):
         test_set, bs, shuffle=False, num_workers=nwkers, collate_fn=sed_collate_fn
     )
  
-    # speech_encoder = SpeechEncoder(**cfg.model.speech_encoder)
-    speech_encoder = SpeechEncoderNew()
+    speech_encoder = SpeechEncoder(**cfg.model.speech_encoder) 
     classifier = nn.Linear(**cfg.model.classifier)
     nn.init.xavier_uniform_(classifier.weight.data)
     if cfg.ckpt.speech_encoder:

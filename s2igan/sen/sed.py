@@ -2,9 +2,6 @@ from typing import List
 
 import torch
 from torch import nn
-from torch.nn.utils.rnn import pack_padded_sequence, pad_packed_sequence 
-import torch.nn.functional as F
-
 
 class SpeechEncoder(nn.Module):
     def __init__(
@@ -35,9 +32,11 @@ class SpeechEncoder(nn.Module):
             nn.Conv1d(1024, cnn_dim[1], 7 , stride),
             nn.BatchNorm1d(cnn_dim[1]),
             nn.SiLU(),
+            nn.MaxPool1d(4),
             nn.Conv1d(cnn_dim[1], 512, 5 , stride),
             nn.BatchNorm1d(512),
-            nn.SiLU()
+            nn.SiLU(),
+            nn.MaxPool1d(4)
         )
 
         self.kernel_size = kernel_size
@@ -106,40 +105,3 @@ class SpeechEncoder(nn.Module):
         out = self.feed_forward(out)
         return out
     
-class SpeechEncoderNew(nn.Module):
-    def __init__(self, n_input=1, n_output=35, stride=16, n_channel=32):
-        super().__init__()
-        self.conv1 = nn.Conv1d(n_input, n_channel, kernel_size=80, stride=stride)
-        self.bn1 = nn.BatchNorm1d(n_channel)
-        self.pool1 = nn.MaxPool1d(4)
-        self.conv2 = nn.Conv1d(n_channel, n_channel, kernel_size=3)
-        self.bn2 = nn.BatchNorm1d(n_channel)
-        self.pool2 = nn.MaxPool1d(4)
-        self.conv3 = nn.Conv1d(n_channel, 2 * n_channel, kernel_size=3)
-        self.bn3 = nn.BatchNorm1d(2 * n_channel)
-        self.pool3 = nn.MaxPool1d(4)
-        self.conv4 = nn.Conv1d(2 * n_channel, 2 * n_channel, kernel_size=3)
-        self.bn4 = nn.BatchNorm1d(2 * n_channel)
-        self.pool4 = nn.MaxPool1d(4)
-        self.fc1 = nn.Linear(2 * n_channel, n_output)
-
-    def get_params(self):
-        return [p for p in self.parameters() if p.requires_grad]
-
-    def forward(self, x):
-        x = self.conv1(x)
-        x = F.relu(self.bn1(x))
-        x = self.pool1(x)
-        x = self.conv2(x)
-        x = F.relu(self.bn2(x))
-        x = self.pool2(x)
-        x = self.conv3(x)
-        x = F.relu(self.bn3(x))
-        x = self.pool3(x)
-        x = self.conv4(x)
-        x = F.relu(self.bn4(x))
-        x = self.pool4(x)
-        x = F.avg_pool1d(x, x.shape[-1])
-        x = x.permute(0, 2, 1)
-        x = self.fc1(x)
-        return F.log_softmax(x, dim=2)

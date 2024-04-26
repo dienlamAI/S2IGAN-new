@@ -106,7 +106,7 @@ class SpeechEncoder(nn.Module):
         out = self.feed_forward(out)
         return out
     
-class M5(nn.Module):
+class SpeechEncoderNew(nn.Module):
     def __init__(self, n_input=1, n_output=35, stride=16, n_channel=32):
         super().__init__()
         self.conv1 = nn.Conv1d(n_input, n_channel, kernel_size=80, stride=stride)

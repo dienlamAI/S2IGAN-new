@@ -43,7 +43,8 @@ def main(cfg: DictConfig):
         test_set, bs, shuffle=False, num_workers=nwkers, collate_fn=sed_collate_fn
     )
  
-    speech_encoder = SpeechEncoderNew(**cfg.model.speech_encoder)
+    # speech_encoder = SpeechEncoder(**cfg.model.speech_encoder)
+    speech_encoder = SpeechEncoderNew()
     classifier = nn.Linear(**cfg.model.classifier)
     nn.init.xavier_uniform_(classifier.weight.data)
     if cfg.ckpt.speech_encoder:

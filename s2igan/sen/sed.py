@@ -31,12 +31,10 @@ class SpeechEncoder(nn.Module):
         self.cnn_2 = nn.Sequential(
             nn.Conv1d(1024, cnn_dim[1], 7 , stride),
             nn.BatchNorm1d(cnn_dim[1]),
-            nn.SiLU(),
-            nn.MaxPool1d(4),
+            nn.SiLU(), 
             nn.Conv1d(cnn_dim[1], 512, 5 , stride),
             nn.BatchNorm1d(512),
-            nn.SiLU(),
-            nn.MaxPool1d(4)
+            nn.SiLU(), 
         )
 
         self.kernel_size = kernel_size
@@ -82,7 +80,7 @@ class SpeechEncoder(nn.Module):
         # l = [
         #     torch.div(y - self.kernel_size, self.stride, rounding_mode="trunc") + 1
         #     for y in mel_spec_len
-        # ]
+        # ]R
         # l = [
         #     torch.div(y - self.kernel_size, self.stride, rounding_mode="trunc") + 1
         #     for y in l

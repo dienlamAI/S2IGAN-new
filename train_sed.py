@@ -16,7 +16,7 @@ from s2igan.sen.sed import  SpeechEncoder
 from s2igan.sen.utils import sed_train_epoch, sed_eval_epoch
 
 config_path = "conf"
-config_name = "sen_config"
+config_name = "sed_config"
 
 
 @hydra.main(version_base=None, config_path=config_path, config_name=config_name)
